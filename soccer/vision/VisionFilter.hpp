@@ -17,7 +17,7 @@
  *
  * Add vision frames directly into the filter call the fill states functions
  * to push the newest estimates directly into the system state.
- * 
+ *
  * Note: There may be a 1 frame delay between the measurements being added
  * and the measurements being included in the filter estimate.
  */
@@ -41,7 +41,7 @@ public:
      *
      * @param state Current system state pointer
      */
-    void fillBallState(SystemState& state);
+    void fillBallState(Context* context);
 
     /**
      * Fills system state with the robots pos/vel
@@ -49,7 +49,7 @@ public:
      * @param state Current system state pointer
      * @param usBlue True if we are blue
      */
-    void fillRobotState(SystemState& state, bool usBlue);
+    void fillRobotState(Context* context, bool usBlue);
 
 private:
     void updateLoop();

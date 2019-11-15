@@ -9,7 +9,7 @@
 
 VisionFilter::VisionFilter() {
     threadEnd.store(false, std::memory_order::memory_order_seq_cst);
-    
+
     // Have to be careful so the entire initialization list
     // is created before the thread starts
     worker = std::thread(&VisionFilter::updateLoop, this);
@@ -28,28 +28,28 @@ void VisionFilter::addFrames(const std::vector<CameraFrame>& frames) {
     frameBuffer.insert(frameBuffer.end(), frames.begin(), frames.end());
 }
 
-void VisionFilter::fillBallState(SystemState& state) {
+void VisionFilter::fillBallState(Context* context) {
     std::lock_guard<std::mutex> lock(worldLock);
     const WorldBall& wb = world.getWorldBall();
 
     if (wb.getIsValid()) {
-        state.ball.valid = true;
-        state.ball.pos = wb.getPos();
-        state.ball.vel = wb.getVel();
-        state.ball.time = wb.getTime();
+        context->state.ball.valid = true;
+        context->state.ball.pos = wb.getPos();
+        context->state.ball.vel = wb.getVel();
+        context->state.ball.time = wb.getTime();
     } else {
-        state.ball.valid = false;
+        context->state.ball.valid = false;
     }
 }
 
-void VisionFilter::fillRobotState(SystemState& state, bool usBlue) {
+void VisionFilter::fillRobotState(Context* context, bool usBlue) {
     std::lock_guard<std::mutex> lock(worldLock);
     const auto& ourWorldRobot = usBlue ? world.getRobotsBlue() : world.getRobotsYellow();
     const auto& oppWorldRobot = usBlue ? world.getRobotsYellow() : world.getRobotsBlue();
 
     // Fill our robots
     for (int i = 0; i < Num_Shells; i++) {
-        OurRobot* robot = state.self.at(i);
+        OurRobot* robot = context->state.self.at(i);
         const WorldRobot& wr = ourWorldRobot.at(i);
 
         RobotState robot_state;
@@ -68,7 +68,7 @@ void VisionFilter::fillRobotState(SystemState& state, bool usBlue) {
 
     // Fill opp robots
     for (int i = 0; i < Num_Shells; i++) {
-        OpponentRobot* robot = state.opp.at(i);
+        OpponentRobot* robot = context->state.opp.at(i);
         const WorldRobot& wr = oppWorldRobot.at(i);
 
         RobotState robot_state;

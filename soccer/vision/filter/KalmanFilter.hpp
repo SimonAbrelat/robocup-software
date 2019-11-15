@@ -33,6 +33,24 @@ public:
     /**
      * Creates a general kalman filter with the given sizes
      * Use a child class to setup the specific state matricies
+     *
+     * @param stateSize The size of the state vector
+     * @param observationSize The size of the observation vector
+     * @param inputSize The size of the input vector
+     */
+    KalmanFilter(unsigned int stateSize, unsigned int observationSize, unsigned int inputSize) :
+        x_k1_k1(stateSize), x_k_k1(stateSize), x_k_k(stateSize),
+        u_k(inputSize), z_k(observationSize),
+        y_k_k1(observationSize), y_k_k(observationSize),
+        P_k1_k1(stateSize, stateSize), P_k_k1(stateSize, stateSize), P_k_k(stateSize, stateSize),
+        S_k(observationSize, observationSize), K_k(stateSize, observationSize),
+        F_k(stateSize, stateSize), B_k(stateSize, inputSize), H_k(observationSize, stateSize),
+        Q_k(stateSize, stateSize), R_k(observationSize, observationSize),
+        I(Eigen::MatrixXd::Identity(stateSize, stateSize)) {}
+
+    /**
+     * Creates a general kalman filter with the given sizes
+     * Use a child class to setup the specific state matricies
      * Assumes 1 input
      *
      * @param stateSize The size of the state vector

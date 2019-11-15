@@ -22,7 +22,7 @@ KalmanFilter3D::KalmanFilter3D() : KalmanFilter(1,1) {}
 
 KalmanFilter3D::KalmanFilter3D(Geometry2d::Pose initPose,
                                Geometry2d::Twist initTwist)
-    : KalmanFilter(6, 3) {
+    : KalmanFilter(6, 3, 3) {
     // States are X pos, X vel, Y pos, Y vel, theta, omega
     x_k1_k1 << initPose.position().x(), initTwist.linear().x(),
         initPose.position().y(), initTwist.linear().y(), initPose.heading(),
@@ -54,12 +54,12 @@ KalmanFilter3D::KalmanFilter3D(Geometry2d::Pose initPose,
 
     // Control transition matrix (B)
     // No inputs. Possible to update for our robots since we know our accel/vel command
-    B_k << 0,
-           0,
-           0,
-           0,
-           0,
-           0;
+    B_k << 0, 0, 0,
+           0, 0, 0,
+           0, 0, 0,
+           0, 0, 0,
+           0, 0, 0,
+           0, 0, 0;
 
     // Observation Matrix (C)
     // We can get positions

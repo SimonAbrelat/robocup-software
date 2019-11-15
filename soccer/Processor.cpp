@@ -248,8 +248,8 @@ void Processor::runModels(const vector<const SSL_DetectionFrame*>& detectionFram
     _vision->addFrames(frames);
 
     // Fill the list of our robots/balls based on whether we are the blue team or not
-    _vision->fillBallState(_context.state);
-    _vision->fillRobotState(_context.state, _blueTeam);
+    _vision->fillBallState(&_context);
+    _vision->fillRobotState(&_context, _blueTeam);
 }
 
 /**
