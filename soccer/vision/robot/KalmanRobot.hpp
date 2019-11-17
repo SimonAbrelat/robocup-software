@@ -44,6 +44,16 @@ public:
     void predictAndUpdate(RJ::Time currentTime, CameraRobot updateRobot);
 
     /**
+     * Predicts one time step forward then triangulates toward the measurement
+     *
+     * @param currentTime Current time of the prediction/update step
+     * @param updateRobot Robot measurement that we are using as feedback
+     * @param input The possible commanded velocities
+     */
+    void predictAndUpdate(RJ::Time currentTime, CameraRobot updateRobot,
+                          std::optional<Geometry2d::Twist> input);
+
+    /**
      * Returns true when the filter hasn't been updated in a while and should be deleted
      */
     bool isUnhealthy() const;

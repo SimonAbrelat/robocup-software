@@ -29,6 +29,17 @@ public:
     void predictWithUpdate(Geometry2d::Pose observation);
 
     /**
+     * Predicts with update
+     * Overrides the standard PredictWithUpdate and sets the z_k and u_k
+     * automatically
+     *
+     * @param observation The observation for the current frame
+     * @param inputs The current commanded velocity for the robot
+     */
+    void predictWithUpdate(Geometry2d::Pose observation,
+                           Geometry2d::Twist inputs);
+
+    /**
      * @return Current position estimate
      */
     Geometry2d::Point getPos() const;

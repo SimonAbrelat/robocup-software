@@ -105,6 +105,15 @@ WorldRobot::WorldRobot(RJ::Time calcTime, Team team, int robotID, std::list<Kalm
     robotComponents = kalmanRobots;
 }
 
+void WorldRobot::setCommand(Geometry2d::Twist robotInput) {
+    command = Geometry2d::Twist(robotInput.linear().rotate(getTheta()),
+                                robotInput.angular());
+}
+
+std::optional<Geometry2d::Twist> WorldRobot::getCommand() const {
+    return command;
+}
+
 bool WorldRobot::getIsValid() const {
     return isValid;
 }
@@ -137,6 +146,4 @@ const std::list<KalmanRobot>& WorldRobot::getRobotComponents() const {
     return robotComponents;
 }
 
-RJ::Time WorldRobot::getTime() const {
-    return time;
-}
+RJ::Time WorldRobot::getTime() const { return time; }

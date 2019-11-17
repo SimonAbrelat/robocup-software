@@ -51,6 +51,7 @@ void VisionFilter::fillRobotState(Context* context, bool usBlue) {
     for (int i = 0; i < Num_Shells; i++) {
         OurRobot* robot = context->state.self.at(i);
         const WorldRobot& wr = ourWorldRobot.at(i);
+        // TODO(Simon): add inputs from Context to the world robot
 
         RobotState robot_state;
         robot_state.visible = wr.getIsValid();

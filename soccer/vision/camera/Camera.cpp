@@ -306,9 +306,10 @@ void Camera::updateRobotsMHKF(RJ::Time calcTime,
         // We had at least one measurement near this Robot
         if (measurementRobots.size() > 0) {
             CameraRobot avgRobot = CameraRobot::CombineRobots(measurementRobots);
-            kalmanRobot.predictAndUpdate(calcTime, avgRobot);
+            kalmanRobot.predictAndUpdate(calcTime, avgRobot,
+                                         previousWorldRobot.getCommand());
 
-        // There aren't any measurements so just predict
+            // There aren't any measurements so just predict
         } else {
             kalmanRobot.predict(calcTime);
         }
@@ -322,7 +323,7 @@ void Camera::updateRobotsMHKF(RJ::Time calcTime,
         if (!wasUsed && singleKalmanRobotList.size() < *max_num_kalman_robots) {
             singleKalmanRobotList.emplace_back(cameraID, calcTime, cameraRobot, previousWorldRobot);
         }
-        
+
         cameraRobotIdx++;
     }
 }
@@ -343,7 +344,8 @@ void Camera::updateRobotsAKF(RJ::Time calcTime,
     }
 
     // Kinda cheating, but we are only keeping a single element in the list
-    singleKalmanRobotList.front().predictAndUpdate(calcTime, avgRobot);
+    singleKalmanRobotList.front().predictAndUpdate(
+        calcTime, avgRobot, previousWorldRobot.getCommand());
 }
 
 void Camera::removeInvalidBalls() {

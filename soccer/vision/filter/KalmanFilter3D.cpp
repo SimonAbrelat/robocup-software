@@ -54,6 +54,7 @@ KalmanFilter3D::KalmanFilter3D(Geometry2d::Pose initPose,
 
     // Control transition matrix (B)
     // No inputs. Possible to update for our robots since we know our accel/vel command
+    // TODO(Simon): Actually populate look at notebook
     B_k << 0, 0, 0,
            0, 0, 0,
            0, 0, 0,
@@ -100,13 +101,19 @@ KalmanFilter3D::KalmanFilter3D(Geometry2d::Pose initPose,
            0,   0, s*o;
 }
 
+void KalmanFilter3D::predictWithUpdate(Geometry2d::Pose observation,
+                                       Geometry2d::Twist input) {
+    u_k << input.linear().x(), input.linear().y(), input.angular();
+
+    predictWithUpdate(observation);
+}
+
 void KalmanFilter3D::predictWithUpdate(Geometry2d::Pose observation) {
     z_k << observation.position().x(), observation.position().y(),
         observation.heading();
 
     KalmanFilter::predictWithUpdate();
 }
-
 
 Geometry2d::Point KalmanFilter3D::getPos() const {
     return Geometry2d::Point(x_k_k(0), x_k_k(2));
@@ -136,6 +143,4 @@ Geometry2d::Point KalmanFilter3D::getVelCov() const {
     return Geometry2d::Point(P_k_k(1,1), P_k_k(3,3));
 }
 
-double KalmanFilter3D::getOmegaCov() const {
-    return P_k_k(5,5);
-}
+double KalmanFilter3D::getOmegaCov() const { return P_k_k(5, 5); }

@@ -47,6 +47,12 @@ void KalmanRobot::predict(RJ::Time currentTime) {
 }
 
 void KalmanRobot::predictAndUpdate(RJ::Time currentTime, CameraRobot updateRobot) {
+    predictAndUpdate(currentTime, updateRobot, std::nullopt);
+}
+
+void KalmanRobot::predictAndUpdate(RJ::Time currentTime,
+                                   CameraRobot updateRobot,
+                                   std::optional<Geometry2d::Twist> input) {
     lastPredictTime = currentTime;
     lastUpdateTime = currentTime;
 
@@ -71,8 +77,15 @@ void KalmanRobot::predictAndUpdate(RJ::Time currentTime, CameraRobot updateRobot
 
     previousTheta = curTheta;
 
-    filter.predictWithUpdate(
-        {updateRobot.getPos(), curTheta + unwrapThetaCtr * 2 * M_PI});
+    // passes inputs if they exsist
+    if (input) {
+        filter.predictWithUpdate(
+            {updateRobot.getPos(), curTheta + unwrapThetaCtr * 2 * M_PI},
+            input.value());
+    } else {
+        filter.predictWithUpdate(
+            {updateRobot.getPos(), curTheta + unwrapThetaCtr * 2 * M_PI});
+    }
 }
 
 bool KalmanRobot::isUnhealthy() const {

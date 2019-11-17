@@ -34,6 +34,16 @@ public:
     WorldRobot(RJ::Time calcTime, Team team, int robotID, std::list<KalmanRobot> kalmanRobots);
 
     /**
+     * @param rawInput The commanded input with reference to the robot
+     */
+    void setCommand(Geometry2d::Twist robotInput);
+
+    /**
+     * @return If the robot actually represents a real robot
+     */
+    std::optional<Geometry2d::Twist> getCommand() const;
+
+    /**
      * @return If the robot actually represents a real robot
      */
     bool getIsValid() const;
@@ -105,6 +115,7 @@ private:
     int robotID;
     Geometry2d::Pose pose;
     Geometry2d::Twist twist;
+    std::optional<Geometry2d::Twist> command;
     double posCov;
     double velCov;
     std::list<KalmanRobot> robotComponents;
