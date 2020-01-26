@@ -167,7 +167,7 @@ void World::detectKicks(RJ::Time calcTime) {
 
     // If there isn't a kick recorded already
     if (!bestKickEstimate.getIsValid()) {
-        
+
         // Try to use the slow kick as it's a better estimate
         // but take fast kick if there isn't a corrsponding slow kick yet
         if (isSlowKick) {
@@ -204,11 +204,11 @@ const WorldBall& World::getWorldBall() const {
     return ball;
 }
 
-const std::vector<WorldRobot>& World::getRobotsYellow() const {
+std::vector<WorldRobot>& World::getRobotsYellow() {
     return robotsYellow;
 }
 
-const std::vector<WorldRobot>& World::getRobotsBlue() const {
+std::vector<WorldRobot>& World::getRobotsBlue() {
     return robotsBlue;
 }
 

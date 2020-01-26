@@ -48,12 +48,12 @@ public:
     /**
      * @return List of the best estimates of all the yellow robots
      */
-    const std::vector<WorldRobot>& getRobotsYellow() const;
+    std::vector<WorldRobot>& getRobotsYellow();
 
     /**
      * @return List of the best estimates of all the blue robots
      */
-    const std::vector<WorldRobot>& getRobotsBlue() const;
+    std::vector<WorldRobot>& getRobotsBlue();
 
     /**
      * @return The best kick estimate over the last few seconds

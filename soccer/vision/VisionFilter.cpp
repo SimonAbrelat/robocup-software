@@ -44,13 +44,13 @@ void VisionFilter::fillBallState(Context* context) {
 
 void VisionFilter::fillRobotState(Context* context, bool usBlue) {
     std::lock_guard<std::mutex> lock(worldLock);
-    const auto& ourWorldRobot = usBlue ? world.getRobotsBlue() : world.getRobotsYellow();
-    const auto& oppWorldRobot = usBlue ? world.getRobotsYellow() : world.getRobotsBlue();
+    auto& ourWorldRobot = usBlue ? world.getRobotsBlue() : world.getRobotsYellow();
+    auto& oppWorldRobot = usBlue ? world.getRobotsYellow() : world.getRobotsBlue();
 
     // Fill our robots
     for (int i = 0; i < Num_Shells; i++) {
         OurRobot* robot = context->state.self.at(i);
-        const WorldRobot& wr = ourWorldRobot.at(i);
+        WorldRobot& wr = ourWorldRobot.at(i);
 
         // TODO(Simon): add inputs from Context to the world robot
         // Use this for the approx commanded position
@@ -61,6 +61,7 @@ void VisionFilter::fillRobotState(Context* context, bool usBlue) {
         robot_state.velocity_valid = wr.getIsValid();
 
         if (wr.getIsValid()) {
+            wr.setCommand(Geometry2d::Twist(setpoint.xvelocity, setpoint.yvelocity, setpoint.avelocity));
             robot_state.pose = Geometry2d::Pose(wr.getPos(), wr.getTheta());
             robot_state.velocity =
                 Geometry2d::Twist(wr.getVel(), wr.getOmega());
