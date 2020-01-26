@@ -78,7 +78,7 @@ void KalmanRobot::predictAndUpdate(RJ::Time currentTime,
     previousTheta = curTheta;
 
     // passes inputs if they exsist
-    if (input) {
+    if (input.has_value()) {
         filter.predictWithUpdate(
             {updateRobot.getPos(), curTheta + unwrapThetaCtr * 2 * M_PI},
             input.value());

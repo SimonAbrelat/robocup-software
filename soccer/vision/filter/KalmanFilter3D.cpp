@@ -53,14 +53,10 @@ KalmanFilter3D::KalmanFilter3D(Geometry2d::Pose initPose,
            0,  0,  0,  0,  0,  1;
 
     // Control transition matrix (B)
-    // No inputs. Possible to update for our robots since we know our accel/vel command
+    // No inputs. Possible to update for our robots since we know our accel/vel
+    // command
     // TODO(Simon): Actually populate look at notebook
-    B_k << 0, 0, 0,
-           0, 0, 0,
-           0, 0, 0,
-           0, 0, 0,
-           0, 0, 0,
-           0, 0, 0;
+    B_k << 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
 
     // Observation Matrix (C)
     // We can get positions
